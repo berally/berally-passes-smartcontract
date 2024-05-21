@@ -5,6 +5,11 @@ import { BerallyPasses } from "../types";
 import { randomInt } from "crypto";
 import { HardhatEthersSigner } from "@nomicfoundation/hardhat-ethers/signers";
 
+const ONE_BERA = BigInt(1e18)
+const Friendly = 120
+const Neutral = 80
+const Aggressive = 40n
+
 describe("Berally Passes Test", function () {
   async function deployFixture() {
     const [owner, admin, manager, user1, user2, user3] = await ethers.getSigners();
@@ -28,9 +33,9 @@ describe("Berally Passes Test", function () {
       expect(await berallyPasses.treasury()).to.equal(owner.address)
       expect(await berallyPasses.protocolFeePercentage()).to.equal(BigInt(4e16))
       expect(await berallyPasses.managerFeePercentage()).to.equal(BigInt(6e16))
-      expect(await berallyPasses.defaultFactors(36000)).to.equal(true)
-      expect(await berallyPasses.defaultFactors(24000)).to.equal(true)
-      expect(await berallyPasses.defaultFactors(12000)).to.equal(true)
+      expect(await berallyPasses.defaultFactors(Friendly)).to.equal(true)
+      expect(await berallyPasses.defaultFactors(Neutral)).to.equal(true)
+      expect(await berallyPasses.defaultFactors(Aggressive)).to.equal(true)
       expect(await berallyPasses.defaultFactors(1000)).to.equal(false)
     })
 
@@ -45,15 +50,15 @@ describe("Berally Passes Test", function () {
     it("Update default factor", async function () {
       const { berallyPasses, owner } = await loadFixture(deployFixture);
 
-      expect(await berallyPasses.defaultFactors(36000)).to.equal(true)
+      expect(await berallyPasses.defaultFactors(Friendly)).to.equal(true)
 
-      await berallyPasses.connect(owner).setDefaultFactor(36000, false)
+      await berallyPasses.connect(owner).setDefaultFactor(Friendly, false)
 
-      expect(await berallyPasses.defaultFactors(36000)).to.equal(false)
+      expect(await berallyPasses.defaultFactors(Friendly)).to.equal(false)
 
-      await berallyPasses.connect(owner).setDefaultFactor(36000, true)
+      await berallyPasses.connect(owner).setDefaultFactor(Friendly, true)
 
-      expect(await berallyPasses.defaultFactors(36000)).to.equal(true)
+      expect(await berallyPasses.defaultFactors(Friendly)).to.equal(true)
     })
 
     it("Protocol Fee Percentage", async function () {
@@ -84,7 +89,7 @@ describe("Berally Passes Test", function () {
     let owner: HardhatEthersSigner, manager: HardhatEthersSigner
     let user1: HardhatEthersSigner, user2: HardhatEthersSigner, user3: HardhatEthersSigner
     let totalSupply = 0n
-    const factor = 12000
+    const factor = Aggressive
 
     this.beforeAll(async function () {
       ({ berallyPasses, owner, manager, user1, user2, user3 } = await loadFixture(deployFixture))
@@ -113,10 +118,10 @@ describe("Berally Passes Test", function () {
 
       expect(totalSupply).to.equal(1)
       const buyPrice = await berallyPasses.getBuyPrice(manager.address, 1)
-      expect(buyPrice).to.equal(Math.floor(1e18/factor))
+      expect(buyPrice).to.equal(ONE_BERA/factor)
 
       const buyPrice2 = await berallyPasses.getBuyPrice(manager.address, 2)
-      expect(buyPrice2).to.equal(BigInt(Math.round(4*1e18/factor)) + buyPrice)
+      expect(buyPrice2).to.equal(BigInt(4n*ONE_BERA/factor) + buyPrice)
 
       const sellPrice = await berallyPasses.getSellPrice(manager.address, 1)
       expect(sellPrice).to.equal(0)

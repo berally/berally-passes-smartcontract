@@ -52,7 +52,7 @@ const config: HardhatUserConfig = {
         network: "berachainTestnet",
         chainId: 80085,
         urls: {
-          apiURL: "https://api.routescan.io/v2/network/testnet/evm/168587773/etherscan",
+          apiURL: 'https://api.routescan.io/v2/network/testnet/evm/80085/etherscan',
           browserURL: "https://artio.beratrail.io/"
         }
       },

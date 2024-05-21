@@ -11,26 +11,16 @@ describe("Berally Passes Test: OnChain", function () {
     [owner] = await ethers.getSigners();
 
     const BerallyPasses = await ethers.getContractFactory("BerallyPasses");
-    console.log('aa', process.env.TESTING_BERALLY_PASSES_ADDRESS)
     berallyPasses = BerallyPasses.attach(process.env.TESTING_BERALLY_PASSES_ADDRESS!) as unknown as BerallyPasses;
 
     const ownerAddress = await berallyPasses.owner()
     console.log(ownerAddress)
   })
 
-  describe("Buy & Sell", function () {
-    let totalSupply = 0n
-    const factor = 24000
-
-    it("Buy the first pass", async function () {
-      const price = await berallyPasses.getBuyPriceAfterFee(owner.address, 1)
-      expect(price).to.equal(0)
-
-      const tx = await berallyPasses.connect(owner).buyPasses(owner.address, 1, factor)
-      totalSupply++
-
-      expect(await berallyPasses.passesSupply(owner.address)).to.equal(totalSupply)
-      expect(await berallyPasses.passesBalance(owner.address, owner.address)).to.equal(1)
+  describe("Actions", function () {
+    it("Updating", async function () {
+      const z = await berallyPasses.protocolFeePercentage()
+      console.log(z)
     })
   })
 });

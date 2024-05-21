@@ -35,9 +35,9 @@ contract BerallyPasses is OwnableUpgradeable {
         protocolFeePercentage = 4e16;
         managerFeePercentage = 6e16;
 
-        defaultFactors[36000] = true;
-        defaultFactors[24000] = true;
-        defaultFactors[12000] = true;
+        defaultFactors[120] = true;
+        defaultFactors[80] = true;
+        defaultFactors[40] = true;
     }
 
     function setTreasury(address _treasury) public onlyOwner {

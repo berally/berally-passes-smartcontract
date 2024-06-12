@@ -26,8 +26,8 @@ const config: HardhatUserConfig = {
         ]:[],
     },
     berachainTestnet : {
-      url: 'https://artio.rpc.berachain.com/',
-      chainId: 80085,
+      url: 'https://bartio.rpc.berachain.com/',
+      chainId: 80084,
       accounts: process.env.OWNER_PRIVATE_KEY
         ?[
           process.env.OWNER_PRIVATE_KEY,
@@ -50,10 +50,10 @@ const config: HardhatUserConfig = {
       },
       {
         network: "berachainTestnet",
-        chainId: 80085,
+        chainId: 80084,
         urls: {
-          apiURL: 'https://api.routescan.io/v2/network/testnet/evm/80085/etherscan',
-          browserURL: "https://artio.beratrail.io/"
+          apiURL: 'https://api.routescan.io/v2/network/testnet/evm/80084/etherscan',
+          browserURL: "https://bartio.beratrail.io/"
         }
       },
     ]
